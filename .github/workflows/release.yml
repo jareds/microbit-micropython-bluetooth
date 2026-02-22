@@ -34,3 +34,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: src/MICROBIT.hex
+permissions:
+  contents: write
+  releases: write
