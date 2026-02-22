@@ -1,20 +1,13 @@
-name: Build MicroPython
+name: Build MicroPython release
 
 on:
-  push:
-    branches: '*'
-  pull_request:
-    branches: '*'
+  release:
+    types: [created]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        # macos-13 is x86_64, and macos-14 is arm64
-        os: [ubuntu-22.04, macos-13, macos-14]
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
-    name: build.py ${{ matrix.os }}
+    runs-on: ubuntu-22.04
+    name: Build MicroPython
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,8 +30,7 @@ jobs:
         run: make -C lib/micropython/mpy-cross -j2
       - name: Build MicroPython
         run: make -C src -j2
-      - name: Upload hex file
-        uses: actions/upload-artifact@v4
+      - name: Upload hex file to release
+        uses: softprops/action-gh-release@v2
         with:
-          name: MICROBIT-MICROPYTHON-${{ github.sha }}-${{ matrix.os }}.hex
-          path: src/MICROBIT.hex
+          files: src/MICROBIT.hex
