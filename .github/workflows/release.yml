@@ -36,4 +36,3 @@ jobs:
           files: src/MICROBIT.hex
 permissions:
   contents: write
-  releases: write
